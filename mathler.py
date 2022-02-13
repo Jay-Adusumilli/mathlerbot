@@ -34,13 +34,12 @@ def printanswers():
 
 def removeanswers():
     temp_list = []
-    new = ""
-    [new.join(i) for i in chars]
-    x = re.compile('^['+new+']+$')
-    for i,index in answer_list:
-         if x.match(i) == None:
-             answer_list.remove(index)
-             index -= 1
+    x = re.compile('^['+"".join(notchars)+']+$')
+    y = re.compile('^['+"".join(chars)+']+$')
+    for i in range(0,len(answer_list)):
+        if re.search(x,answer_list[i]) or not re.search(y,answer_list[i]):
+             answer_list.remove(i)
+             i -= 1
 
 
 while (len(answer_list) > 1):
