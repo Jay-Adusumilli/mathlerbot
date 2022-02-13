@@ -4,6 +4,7 @@ import os
 from sympy import sympify
 import re
 
+
 if len(sys.argv) != 2:
     print("Useage: python mathler.py input.txt")
     quit()
