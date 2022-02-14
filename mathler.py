@@ -1,3 +1,4 @@
+from queue import Empty
 import sys
 from time import sleep
 import os
@@ -14,6 +15,7 @@ with open(name, "r") as fp:
 
 chars = []
 notchars = []
+usablechars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/']
 spaces = len(answer_list[0])
 final = [None] * spaces
 
@@ -34,12 +36,15 @@ def printanswers():
 
 def removeanswers():
     temp_list = []
-    x = re.compile('^['+"".join(notchars)+']+$')
-    y = re.compile('^['+"".join(chars)+']+$')
+    yeschars = chars[:]
+    yeschars.extend(usablechars)
+    x = re.compile('^['+"".join(notchars).replace('-','\-')+']+$')
+    y = re.compile('^['+"".join(yeschars).replace('-','\-')+']+$')
     for i in range(0,len(answer_list)):
-        if re.search(x,answer_list[i]) or not re.search(y,answer_list[i]):
-             answer_list.remove(i)
-             i -= 1
+        if i<len(answer_list):
+            if re.search(x,answer_list[i]) or not re.search(y,answer_list[i]):
+                answer_list.remove(answer_list[i])
+                i -= 1
 
 
 while (len(answer_list) > 1):
@@ -49,16 +54,22 @@ while (len(answer_list) > 1):
         firstc = input("Colors [g/y/r]: ")
 
         for i in range(len(firstc)):
-            if firstc[i] == 'g':
-                final[i] = first[i]
-                chars.append(first[i])
-            if firstc[i] == 'r':
-                notchars.append(first[i])
-            if firstc[i] == 'y':
-                chars.append(first[i])
+            if first[i] in usablechars:
+                if firstc[i] == 'g':
+                    final[i] = first[i]
+                    chars.append(first[i])
+                    usablechars.remove(first[i])
+                elif firstc[i] == 'y':
+                    chars.append(first[i])
+                    usablechars.remove(first[i])
+                elif firstc[i] == 'r':
+                    notchars.append(first[i])
+                    usablechars.remove(first[i])
+            
         print(chars)
         print(notchars)
         print(final)
+        print(usablechars)
         print(len(answer_list))
 
         removeanswers()
@@ -68,5 +79,7 @@ while (len(answer_list) > 1):
     except KeyboardInterrupt:
         print("\nQuiting...")
         quit()
+    if usablechars is Empty:
+        break
 
 
