@@ -5,8 +5,8 @@ import multiprocessing as mp
 import os
 
 chars = "0123456789+-*/"
-spaces = 8
-answer = 15
+spaces = 6
+answer = 8
 oper = ["+", "-", "*", "/"]
 non_zeros = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
