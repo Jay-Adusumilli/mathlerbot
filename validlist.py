@@ -6,7 +6,7 @@ import os
 
 chars = "0123456789+-*/"
 spaces = 6
-answer = 8
+answer = 15
 oper = ["+", "-", "*", "/"]
 non_zeros = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
@@ -29,7 +29,7 @@ def isValid(exp):
     if has_ops == 0:
         return None
     return exp
-    
+
 
 def equalsAnswer(temp):
     if sympify(temp) == answer:
@@ -42,11 +42,10 @@ if __name__ == "__main__":
     cores = mp.cpu_count()
     print("\nFiltering all valid strings:")
     with mp.Pool(processes=cores) as pool:
-        for p in tqdm(pool.imap_unordered(func = isValid,iterable = product(chars, repeat = spaces), chunksize = 500000), total = total):
-            if p != None:
-                all_valid.append(p)
+        for p in tqdm(pool.imap_unordered(func = isValid,iterable = product(chars, repeat = spaces), chunksize = 1000), total = total):
+            all_valid.append(p)
 
-    #all_valid[:] = ["".join(x) for x in all_valid if x != None]
+    all_valid[:] = ["".join(x) for x in all_valid if x != None]
 
     print("\nGetting all answers to " + str(answer) + ":")
     with mp.Pool(processes=cores) as pool:
